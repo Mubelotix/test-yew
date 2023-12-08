@@ -99,6 +99,7 @@ impl Component for App {
             scientists_progress = { self.state.scientist.to_string() },
             united_nations_progress = { self.state.united_nations.to_string() },
             cartel_progress = { self.state.cartel.to_string() },
+            gameover = { self.state.game_over },
             onclick_accept = { ctx.link().callback(|_| Msg::Accept) },
             onclick_reject = { ctx.link().callback(|_| Msg::Reject) },
             ...

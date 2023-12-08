@@ -7,7 +7,7 @@
         Economic:
         <progress value={{economic_progress}} max="100"></progress><br/>
     </div>
-    <div class="central-panel">
+    <div present-if=!{{gameover}} class="central-panel">
         <h2>{{title}}</h2>
         <p>
             {{description}}
@@ -18,6 +18,12 @@
             <button onclick={{onclick_accept}}>Accept</button>
             <button onclick={{onclick_reject}}>Reject</button>
         </div>
+    </div>
+    <div present-if={{gameover}} class="central-panel">
+        <h2>Perdu</h2>
+        <p>
+            Vous avez perdu.
+        </p>
     </div>
     <div class="side-panel">
         Scientists:
