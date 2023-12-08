@@ -93,6 +93,12 @@ impl Component for App {
             "src/main.html",
             title = { self.measure.title.clone() },
             description = { self.measure.description.clone() },
+            social_progress = { self.state.social.to_string() },
+            environmental_progress = { self.state.environmental.to_string() },
+            economic_progress = { self.state.economic.to_string() },
+            scientists_progress = { self.state.scientist.to_string() },
+            united_nations_progress = { self.state.united_nations.to_string() },
+            cartel_progress = { self.state.cartel.to_string() },
             onclick_accept = { ctx.link().callback(|_| Msg::Accept) },
             onclick_reject = { ctx.link().callback(|_| Msg::Reject) },
             ...

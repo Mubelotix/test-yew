@@ -1,5 +1,12 @@
 <main>
-    <div class="side-panel"></div>
+    <div class="side-panel">
+        Social:
+        <progress value={{social_progress}} max="100"></progress><br/>
+        Environmental:
+        <progress value={{environmental_progress}} max="100"></progress><br/>
+        Economic:
+        <progress value={{economic_progress}} max="100"></progress><br/>
+    </div>
     <div class="central-panel">
         <h2>{{title}}</h2>
         <p>
@@ -12,5 +19,12 @@
             <button onclick={{onclick_reject}}>Reject</button>
         </div>
     </div>
-    <div class="side-panel"></div>
+    <div class="side-panel">
+        Scientists:
+        <progress value={{scientists_progress}} max="100"></progress><br/>
+        United Nations:
+        <progress value={{united_nations_progress}} max="100"></progress><br/>
+        Cartel:
+        <progress value={{cartel_progress}} max="100"></progress><br/>
+    </div>
 </main>

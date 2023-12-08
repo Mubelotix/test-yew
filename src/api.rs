@@ -35,15 +35,15 @@ pub async fn create_game(pseudo: String) -> String {
 
 #[derive(Serialize, Deserialize, Debug, Default)]
 pub struct GameState {
-    social: isize,
-    economic: isize,
-    environmental: isize,
-    scientist: isize,
-    united_nations: isize,
-    cartel: isize,
-    current_month: isize,
-    current_year: isize,
-    game_over: bool,
+    pub social: isize,
+    pub economic: isize,
+    pub environmental: isize,
+    pub scientist: isize,
+    pub united_nations: isize,
+    pub cartel: isize,
+    pub current_month: isize,
+    pub current_year: isize,
+    pub game_over: bool,
 }
 
 pub async fn get_game(token: &str) -> GameState {
