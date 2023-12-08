@@ -1,16 +1,20 @@
 use yew::prelude::*;
 use yew_template::template_html;
 
-use crate::log;
+use crate::{log, api::{GameState, Measure}};
 
 pub struct App {
     token: Option<String>,
+    state: GameState,
+    measure: Measure,
 }
 
 pub enum Msg {
     Accept,
     Reject,
     GameCreated(String),
+    StateUpdated(GameState),
+    MeasureUpdated(Measure),
 }
 
 impl Component for App {
@@ -25,6 +29,8 @@ impl Component for App {
         });
         App {
             token: None,
+            state: GameState::default(),
+            measure: Measure::default(),
         }
     }
 
@@ -38,7 +44,29 @@ impl Component for App {
             },
             Msg::GameCreated(token) => {
                 log!("Game created: {}", token);
+                let token2 = token.clone();
+                let token3 = token.clone();
                 self.token = Some(token);
+                let link2 = ctx.link().clone();
+                let link3 = ctx.link().clone();
+                wasm_bindgen_futures::spawn_local(async move {
+                    let game_state = crate::api::get_game(&token2).await;
+                    link2.send_message(Msg::StateUpdated(game_state));
+                });
+                wasm_bindgen_futures::spawn_local(async move {
+                    let measure = crate::api::get_measure(&token3).await;
+                    link3.send_message(Msg::MeasureUpdated(measure));
+                });
+                true
+            },
+            Msg::MeasureUpdated(measure) => {
+                log!("Measure updated: {:?}", measure);
+                self.measure = measure;
+                true
+            },
+            Msg::StateUpdated(game_state) => {
+                log!("Game updated: {:?}", game_state);
+                self.state = game_state;
                 true
             },
         }
@@ -47,8 +75,8 @@ impl Component for App {
     fn view(&self, ctx: &Context<Self>) -> Html {
         template_html! {
             "src/main.html",
-            title = "Yew Template",
-            description = "A template for Yew projects",
+            title = { self.measure.title.clone() },
+            description = { self.measure.description.clone() },
             onclick_accept = { ctx.link().callback(|_| Msg::Accept) },
             onclick_reject = { ctx.link().callback(|_| Msg::Reject) },
             ...
