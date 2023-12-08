@@ -8,6 +8,7 @@
         <progress value={{economic_progress}} max="100"></progress><br/>
     </div>
     <div present-if=!{{gameover}} class="central-panel">
+        <span>{{current_month}} {{current_year}}</span>
         <h2>{{title}}</h2>
         <p>
             {{description}}
@@ -20,6 +21,7 @@
         </div>
     </div>
     <div present-if={{gameover}} class="central-panel">
+        <span>{{current_month}} {{current_year}}</span>
         <h2>Perdu</h2>
         <p>
             Vous avez perdu.
