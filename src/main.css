@@ -25,6 +25,11 @@ main {
     flex-direction: column;
 }
 
+img {
+    max-width: 50%;
+    max-height: 50%;
+}
+
 .central-panel {
     width: 50%;
     border-radius: 1rem;

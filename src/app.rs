@@ -34,6 +34,34 @@ impl App {
     }
 }
 
+fn title_to_image(title: &str) -> &'static str {
+    match title {
+        "Promotion du Bio" => "agriculture.png",
+        "Interdiction des sacs plastiques" => "agriculture.png",
+        "Interdiction du chauffage au bois" => "co2.png",
+        "Barrage" => "nuclear.png",
+        "Fusion nucléaire" => "nuclear.png",
+        "Taxe Carbone" => "co2.png",
+        "Exploitation des fôrets" => "agriculture.png",
+        "Capture de CO2" => "co2.png",
+        "Interdiction de la publicité pour les produits polluants" => "agriculture.png",
+        "Subventions de lave-vaisselles" => "agriculture.png",
+        "Proposition du Cartel" => "stalin.png",
+        "Taxe sur la viande" => "stalin.png",
+        "Subvention du nucléaire" => "nuclear.png",
+        "Sapin de Noël" => "agriculture.png",
+        "Arrêt du nucléaire" => "nuclear.png",
+        "Politique de l'enfant unique" => "stalin.png",
+        "Promotion du covoiturage" => "nuclear.png",
+        "Aide à l'achat de machines à laver à grande capacité" => "nuclear.png",
+        "Construction d'autoroute" => "agriculture.png",
+        "Aires protégées" => "agriculture.png",
+        "Parcs éoliens mer" => "nuclear.png",
+        "Subvention des énergies propres" => "nuclear.png",
+        _ => "stalin.png"
+    }
+}
+
 impl Component for App {
     type Message = Msg;
     type Properties = ();
@@ -115,6 +143,7 @@ impl Component for App {
                 _ => "décembre",
             } },
             current_year = { self.state.current_year },
+            image = { title_to_image(&self.measure.title) },
             onclick_accept = { ctx.link().callback(|_| Msg::Accept) },
             onclick_reject = { ctx.link().callback(|_| Msg::Reject) },
             ...
