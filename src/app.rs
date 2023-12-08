@@ -17,6 +17,23 @@ pub enum Msg {
     MeasureUpdated(Measure),
 }
 
+impl App {
+    fn update(&mut self, ctx: &Context<Self>) {
+        let token2 = self.token.as_ref().unwrap().clone();
+        let token3 = token2.clone();
+        let link2 = ctx.link().clone();
+        let link3 = ctx.link().clone();
+        wasm_bindgen_futures::spawn_local(async move {
+            let game_state = crate::api::get_game(&token2).await;
+            link2.send_message(Msg::StateUpdated(game_state));
+        });
+        wasm_bindgen_futures::spawn_local(async move {
+            let measure = crate::api::get_measure(&token3).await;
+            link3.send_message(Msg::MeasureUpdated(measure));
+        });
+    }
+}
+
 impl Component for App {
     type Message = Msg;
     type Properties = ();
@@ -37,26 +54,25 @@ impl Component for App {
     fn update(&mut self, ctx: &Context<Self>, msg: Self::Message) -> bool {
         match msg {
             Msg::Accept => {
+                let token = self.token.as_ref().unwrap().clone();
+                wasm_bindgen_futures::spawn_local(async move {
+                    crate::api::accept(&token).await;
+                });
+                self.update(ctx);
                 true
             },
             Msg::Reject => {
+                let token = self.token.as_ref().unwrap().clone();
+                wasm_bindgen_futures::spawn_local(async move {
+                    crate::api::reject(&token).await;
+                });
+                self.update(ctx);
                 true
             },
             Msg::GameCreated(token) => {
                 log!("Game created: {}", token);
-                let token2 = token.clone();
-                let token3 = token.clone();
                 self.token = Some(token);
-                let link2 = ctx.link().clone();
-                let link3 = ctx.link().clone();
-                wasm_bindgen_futures::spawn_local(async move {
-                    let game_state = crate::api::get_game(&token2).await;
-                    link2.send_message(Msg::StateUpdated(game_state));
-                });
-                wasm_bindgen_futures::spawn_local(async move {
-                    let measure = crate::api::get_measure(&token3).await;
-                    link3.send_message(Msg::MeasureUpdated(measure));
-                });
+                self.update(ctx);
                 true
             },
             Msg::MeasureUpdated(measure) => {

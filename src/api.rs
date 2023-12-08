@@ -100,4 +100,47 @@ pub async fn get_measure(token: &str) -> Measure {
     serde_json::from_str(&text.as_string().unwrap()).unwrap()
 }
 
+pub async fn accept(token: &str) {
+    let mut req_init = web_sys::RequestInit::new();
+    req_init.method("POST");
+    //req_init.body(Some(&JsValue::from_str(&serde_json::to_string(&pseudo).unwrap())));
+
+    let request = Request::new_with_str_and_init("http://localhost:8000/accept", &req_init).unwrap();
+    request.headers().set("Authorization", token).expect("Failed to set authorization header");
+    //request.headers().set(
+    //    "Api-Key",
+    //    &format!("{}-{}-{}", api_key, counter, gen_code(api_key, counter)),
+    //)?;
+    //request.headers().set("Content-Type", "application/json").expect("Failed to set content type");
+
+    let response = JsFuture::from(window().unwrap().fetch_with_request(&request)).await.expect("Failed to fetch");
+    let response: web_sys::Response = response.clone().dyn_into().unwrap();
+    let text = JsFuture::from(response.text().unwrap()).await.unwrap();
+
+    if response.status() != 200 {
+        panic!("Failed to create game: {}", text.as_string().unwrap());
+    }
+}
+
+pub async fn reject(token: &str) {
+    let mut req_init = web_sys::RequestInit::new();
+    req_init.method("POST");
+    //req_init.body(Some(&JsValue::from_str(&serde_json::to_string(&pseudo).unwrap())));
+
+    let request = Request::new_with_str_and_init("http://localhost:8000/reject", &req_init).unwrap();
+    request.headers().set("Authorization", token).expect("Failed to set authorization header");
+    //request.headers().set(
+    //    "Api-Key",
+    //    &format!("{}-{}-{}", api_key, counter, gen_code(api_key, counter)),
+    //)?;
+    //request.headers().set("Content-Type", "application/json").expect("Failed to set content type");
+
+    let response = JsFuture::from(window().unwrap().fetch_with_request(&request)).await.expect("Failed to fetch");
+    let response: web_sys::Response = response.clone().dyn_into().unwrap();
+    let text = JsFuture::from(response.text().unwrap()).await.unwrap();
+
+    if response.status() != 200 {
+        panic!("Failed to create game: {}", text.as_string().unwrap());
+    }
+}
 
